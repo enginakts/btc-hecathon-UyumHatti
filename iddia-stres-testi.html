@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İddia Stres Testi — Pazaryeri & D2C</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F3EF;
+    --surface: #FFFFFF;
+    --surface2: #F0EDE8;
+    --border: #E2DDD6;
+    --text: #1A1714;
+    --text-muted: #7A7269;
+    --accent: #FF4D1C;
+    --accent-soft: #FFF0EC;
+    --teal: #0D9488;
+    --teal-soft: #ECFDF5;
+    --amber: #D97706;
+    --amber-soft: #FFFBEB;
+    --blue: #2563EB;
+    --blue-soft: #EFF6FF;
+    --red: #DC2626;
+    --red-soft: #FEF2F2;
+    --yellow: #CA8A04;
+    --yellow-soft: #FEFCE8;
+    --tag-high-bg: #FEE2E2;
+    --tag-high: #DC2626;
+    --tag-mid-bg: #FEF9C3;
+    --tag-mid: #854D0E;
+    --tag-low-bg: #DCFCE7;
+    --tag-low: #166534;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.08);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,.10);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ─── TOP NAV ─── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(245,243,239,.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 15px; letter-spacing: -.3px;
+  }
+  .nav-logo {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 16px; font-weight: 700;
+  }
+  .nav-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: .4px;
+    text-transform: uppercase;
+  }
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .nav-pill {
+    padding: 6px 14px; border-radius: 20px; font-size: 12px;
+    font-weight: 600; cursor: pointer; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-muted);
+    transition: all .2s;
+  }
+  .nav-pill:hover { background: var(--text); color: white; border-color: var(--text); }
+
+  /* ─── HERO ─── */
+  .hero {
+    padding: 48px 32px 32px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent-soft);
+    border: 1px solid #FFCDB8;
+    color: var(--accent);
+    border-radius: 20px; padding: 4px 12px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .5px; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero-eyebrow::before { content: '●'; font-size: 8px; }
+  h1 {
+    font-size: 36px; font-weight: 700;
+    letter-spacing: -1px; line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  h1 span { color: var(--accent); }
+  .hero-desc {
+    max-width: 560px; color: var(--text-muted);
+    font-size: 14px; line-height: 1.7; margin-bottom: 8px;
+  }
+  .hero-desc strong { color: var(--text); }
+  .mock-notice {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--amber-soft);
+    border: 1px solid #FDE68A;
+    color: var(--amber); border-radius: 8px;
+    padding: 6px 12px; font-size: 12px; font-weight: 500;
+    margin-top: 8px;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .workspace {
+    max-width: 1200px; margin: 0 auto;
+    padding: 0 32px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .card-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+  }
+  .icon-input { background: var(--blue-soft); }
+  .icon-risk { background: var(--red-soft); }
+  .icon-suggest { background: var(--teal-soft); }
+  .icon-policy { background: var(--amber-soft); }
+  .card-title-group { flex: 1; }
+  .card-title {
+    font-size: 15px; font-weight: 700;
+    letter-spacing: -.3px;
+  }
+  .card-subtitle {
+    font-size: 12px; color: var(--text-muted); margin-top: 2px;
+  }
+  .card-body { padding: 24px; }
+
+  /* ─── FORM ─── */
+  .field { margin-bottom: 20px; }
+  .field:last-child { margin-bottom: 0; }
+  label {
+    display: block; font-size: 12px; font-weight: 600;
+    color: var(--text-muted); letter-spacing: .3px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  input[type="text"], textarea {
+    width: 100%; border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm); padding: 12px 14px;
+    font-family: 'Sora', sans-serif; font-size: 14px;
+    color: var(--text); background: var(--bg);
+    transition: border-color .2s, box-shadow .2s; resize: none;
+    outline: none;
+  }
+  input[type="text"]:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255,77,28,.1);
+    background: white;
+  }
+  textarea { min-height: 120px; line-height: 1.6; }
+  .char-count {
+    text-align: right; font-size: 11px;
+    color: var(--text-muted); margin-top: 4px;
+  }
+
+  /* ─── TOGGLE ROW ─── */
+  .toggle-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 16px;
+  }
+  .toggle {
+    position: relative; width: 40px; height: 22px; flex-shrink: 0; margin-top: 1px;
+  }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0; cursor: pointer;
+    background: #D1CCC5; border-radius: 22px; transition: .2s;
+  }
+  .toggle-slider::before {
+    content: ''; position: absolute;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: white; left: 3px; top: 3px; transition: .2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  }
+  .toggle input:checked + .toggle-slider { background: var(--teal); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+  .toggle-info strong {
+    font-size: 13px; font-weight: 600; display: block; margin-bottom: 2px;
+  }
+  .toggle-info p { font-size: 12px; color: var(--text-muted); }
+
+  /* ─── CTA BUTTON ─── */
+  .btn-run {
+    width: 100%; padding: 15px;
+    background: var(--accent); color: white;
+    border: none; border-radius: var(--radius-sm);
+    font-family: 'Sora', sans-serif;
+    font-size: 14px; font-weight: 700;
+    letter-spacing: -.2px; cursor: pointer;
+    transition: transform .15s, box-shadow .15s, background .15s;
+    box-shadow: 0 4px 14px rgba(255,77,28,.35);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 8px;
+  }
+  .btn-run:hover {
+    background: #e8400e;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255,77,28,.45);
+  }
+  .btn-run:active { transform: translateY(0); }
+
+  /* ─── RISK PANEL ─── */
+  .mock-tag {
+    background: var(--amber-soft); border: 1px solid #FDE68A;
+    color: var(--amber); border-radius: 6px;
+    padding: 3px 9px; font-size: 11px; font-weight: 700;
+    letter-spacing: .4px;
+  }
+  .scan-complete {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--teal-soft); border: 1px solid #A7F3D0;
+    color: var(--teal); border-radius: var(--radius-sm);
+    padding: 10px 14px; font-size: 13px; font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .human-review {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--red-soft); border: 1px solid #FECACA;
+    border-radius: var(--radius-sm); padding: 12px 14px;
+    margin-bottom: 20px;
+  }
+  .human-review-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .human-review p { font-size: 13px; color: var(--red); font-weight: 500; line-height: 1.5; }
+
+  /* ─── RISK ITEMS ─── */
+  .risk-list { display: flex; flex-direction: column; gap: 10px; }
+  .risk-item {
+    border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    overflow: hidden; transition: box-shadow .2s;
+  }
+  .risk-item:hover { box-shadow: var(--shadow-md); }
+  .risk-item-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 11px 14px; cursor: pointer;
+    background: var(--surface);
+  }
+  .risk-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    padding: 2px 7px; border-radius: 4px;
+    letter-spacing: .3px;
+  }
+  .risk-code.high { background: var(--tag-high-bg); color: var(--tag-high); }
+  .risk-code.mid  { background: var(--tag-mid-bg); color: var(--tag-mid); }
+  .risk-code.low  { background: var(--tag-low-bg); color: var(--tag-low); }
+  .severity-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  }
+  .severity-dot.high { background: var(--tag-high); }
+  .severity-dot.mid  { background: var(--amber); }
+  .severity-dot.low  { background: var(--teal); }
+  .risk-label { flex: 1; font-size: 13px; font-weight: 600; }
+  .severity-badge {
+    font-size: 10px; font-weight: 700; padding: 2px 7px;
+    border-radius: 4px; letter-spacing: .4px; text-transform: uppercase;
+  }
+  .severity-badge.high { background: var(--tag-high-bg); color: var(--tag-high); }
+  .severity-badge.mid  { background: var(--tag-mid-bg); color: var(--tag-mid); }
+  .severity-badge.low  { background: var(--tag-low-bg); color: var(--tag-low); }
+  .risk-quote {
+    padding: 10px 14px 12px;
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; color: var(--text-muted); line-height: 1.6;
+  }
+  .risk-quote::before { content: '"'; color: var(--accent); font-size: 16px; }
+  .risk-quote::after  { content: '"'; color: var(--accent); font-size: 16px; }
+  .hallucination-note {
+    background: var(--red-soft); border: 1.5px solid #FECACA;
+    border-radius: var(--radius-sm); padding: 12px 14px;
+    font-size: 13px; color: var(--red); font-weight: 500;
+    display: flex; align-items: flex-start; gap: 8px;
+    margin-top: 10px;
+  }
+
+  /* ─── SUGGESTED TEXT ─── */
+  .suggest-section { margin-bottom: 24px; }
+  .suggest-section:last-child { margin-bottom: 0; }
+  .suggest-label {
+    font-size: 11px; font-weight: 700; letter-spacing: .5px;
+    text-transform: uppercase; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .suggest-label.new { color: var(--teal); }
+  .suggest-label.new::before {
+    content: ''; display: block; width: 3px; height: 14px;
+    background: var(--teal); border-radius: 2px;
+  }
+  .suggest-label.changes { color: var(--blue); }
+  .suggest-label.changes::before {
+    content: ''; display: block; width: 3px; height: 14px;
+    background: var(--blue); border-radius: 2px;
+  }
+  .new-title {
+    font-size: 14px; font-weight: 600; line-height: 1.5;
+    color: var(--text); background: var(--teal-soft);
+    border: 1px solid #A7F3D0; border-radius: var(--radius-sm);
+    padding: 12px 14px;
+  }
+  .new-body {
+    font-size: 13.5px; line-height: 1.7;
+    color: var(--text); background: var(--surface2);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 14px; margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+  }
+  .change-list { display: flex; flex-direction: column; gap: 6px; }
+  .change-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--blue-soft); border: 1px solid #BFDBFE;
+    border-radius: 8px; padding: 9px 12px;
+  }
+  .change-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    color: var(--blue); background: #DBEAFE;
+    border-radius: 4px; padding: 2px 6px;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .change-arrow { color: var(--text-muted); font-size: 12px; }
+  .change-desc { font-size: 12.5px; color: var(--text); }
+
+  /* ─── POLICY PANEL ─── */
+  .policy-accordion {
+    border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden;
+  }
+  .policy-toggle-btn {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; background: none; border: none;
+    font-family: 'Sora', sans-serif; font-size: 14px;
+    font-weight: 600; color: var(--text); cursor: pointer;
+    text-align: left;
+  }
+  .policy-toggle-btn:hover { background: var(--surface2); }
+  .policy-chevron { font-size: 12px; transition: transform .2s; }
+  .policy-chevron.open { transform: rotate(180deg); }
+  .policy-content { display: none; padding: 4px 20px 20px; }
+  .policy-content.open { display: block; }
+  .policy-block {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; color: var(--text-muted); line-height: 1.8;
+    margin-bottom: 10px;
+  }
+  .policy-block:last-child { margin-bottom: 0; }
+  .policy-block strong { color: var(--text); font-family: 'Sora', sans-serif; }
+
+  /* ─── FOOTER DISCLAIMER ─── */
+  footer {
+    text-align: center; padding: 24px 32px;
+    font-size: 11.5px; color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  /* ─── PROGRESS BAR (for loading feel) ─── */
+  .progress-bar {
+    height: 3px; background: var(--border);
+    border-radius: 2px; overflow: hidden; margin-bottom: 16px;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--amber));
+    border-radius: 2px; width: 100%;
+    animation: progress-in .8s cubic-bezier(.4,0,.2,1) both;
+  }
+  @keyframes progress-in {
+    from { width: 0; }
+    to   { width: 100%; }
+  }
+
+  /* ─── COLUMN SPAN ─── */
+  .full-width { grid-column: 1 / -1; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 0 16px; }
+    .hero { padding: 32px 16px 24px; }
+    h1 { font-size: 26px; }
+    .workspace { padding: 0 16px 60px; grid-template-columns: 1fr; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .card { animation: card-in .4s cubic-bezier(.4,0,.2,1) both; }
+  .card:nth-child(1) { animation-delay: 0s; }
+  .card:nth-child(2) { animation-delay: .05s; }
+  .card:nth-child(3) { animation-delay: .1s; }
+  .card:nth-child(4) { animation-delay: .15s; }
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero { animation: hero-in .5s cubic-bezier(.4,0,.2,1) both; }
+  @keyframes hero-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px; background: var(--border); margin: 20px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">İ</div>
+    İddia Stres Testi
+    <span class="nav-badge">Pazaryeri & D2C</span>
+  </div>
+  <div class="nav-right">
+    <button class="nav-pill">Belgeleme</button>
+    <button class="nav-pill">API Ayarları</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Yapay Zekâ Destekli Analiz</div>
+  <h1>Listeleme metninizi<br><span>risk analizi</span>nden geçirin</h1>
+  <p class="hero-desc">
+    İki aşamalı akıllı tarama: önce <strong>risk tespiti</strong>, ardından <strong>daha güvenli metin önerisi</strong>.
+    API anahtarı yoksa otomatik olarak <strong>kural tabanlı mock</strong> modunda çalışır.
+  </p>
+  <div class="mock-notice">⚡ Şu an Mock modunda çalışıyor — gerçek LLM analizi için API anahtarı girin</div>
+</div>
+
+<!-- WORKSPACE -->
+<main class="workspace">
+
+  <!-- ① GİRİŞ PANELİ -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-input">📝</div>
+      <div class="card-title-group">
+        <div class="card-title">Listeleme Metni</div>
+        <div class="card-subtitle">Başlık ve açıklamanızı girin, analizi başlatın</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <label>Ürün Başlığı</label>
+        <input type="text" id="titleInput" value="Doğal Ahşap Detoks Kremi — %100 şifa garantili en iyi çözüm" placeholder="Ürün başlığını buraya yazın…">
+      </div>
+
+      <div class="field">
+        <label>Ürün Açıklaması <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(isteğe bağlı)</span></label>
+        <textarea id="descInput" placeholder="Ürün açıklamasını buraya yazın…">Cildinizi yeniler. Kanser hücrelerine karşı korur diyenler oldu; biz kesin sonuç vaat ediyoruz.
+Son 3 adet! Çevre dostu yeşil ürün. #1 satış rekoru.</textarea>
+        <div class="char-count" id="charCount">148 karakter</div>
+      </div>
+
+      <div class="field">
+        <label>Malzeme / Ürün Gerçekleri <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(boş bırakılabilir)</span></label>
+        <input type="text" id="materialInput" value="ABS plastik gövde" placeholder="Örn: ABS plastik gövde, %100 vegan…">
+      </div>
+
+      <div class="toggle-row field">
+        <label class="toggle">
+          <input type="checkbox" id="llmToggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <div class="toggle-info">
+          <strong>LLM ile Gelişmiş Analiz</strong>
+          <p>Sunucuda API anahtarı tanımlıysa gelişmiş analiz kullanır; yoksa yine de mock sonuç alırsınız.</p>
+        </div>
+      </div>
+
+      <button class="btn-run" onclick="runAnalysis()">
+        🔍 Stres Testini Çalıştır
+      </button>
+    </div>
+  </div>
+
+  <!-- ② RİSK PANELİ -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-risk">⚠️</div>
+      <div class="card-title-group">
+        <div class="card-title">Risk Analizi</div>
+        <div class="card-subtitle">Tespit edilen uyarılar — yayına çıkmadan önce gözden geçirin</div>
+      </div>
+      <span class="mock-tag">MOCK</span>
+    </div>
+    <div class="card-body">
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+      <div class="scan-complete">✅ Kural tabanlı tarama tamamlandı</div>
+      <div class="human-review">
+        <span class="human-review-icon">👤</span>
+        <p><strong>İnsan incelemesi önerilir</strong> — yüksek risk veya sağlık iddiası içeriyor</p>
+      </div>
+
+      <div class="risk-list">
+
+        <div class="risk-item">
+          <div class="risk-item-header" onclick="toggleRisk(this)">
+            <span class="severity-dot high"></span>
+            <span class="risk-code high">UNSUB_HEALTH</span>
+            <span class="risk-label">Sağlık / Tedavi İması</span>
+            <span class="severity-badge high">Yüksek</span>
+          </div>
+          <div class="risk-quote">"...%100 şifa garantili en iyi çözüm Cildinizi yeni..."</div>
+        </div>
+
+        <div class="risk-item">
+          <div class="risk-item-header" onclick="toggleRisk(this)">
+            <span class="severity-dot mid"></span>
+            <span class="risk-code mid">UNSUB_GUARANTEE</span>
+            <span class="risk-label">Mutlak Garanti / Kesin Sonuç İddiası</span>
+            <span class="severity-badge mid">Orta</span>
+          </div>
+          <div class="risk-quote">"...%100 şifa garantili... biz kesin sonuç vaat ediyoruz..."</div>
+        </div>
+
+        <div class="risk-item">
+          <div class="risk-item-header" onclick="toggleRisk(this)">
+            <span class="severity-dot mid"></span>
+            <span class="risk-code mid">UNSUB_SUPERLATIVE</span>
+            <span class="risk-label">Kanıtsız Üstünlük İddiası</span>
+            <span class="severity-badge mid">Orta</span>
+          </div>
+          <div class="risk-quote">"...%100 garantili en iyi çözüm..."</div>
+        </div>
+
+        <div class="risk-item">
+          <div class="risk-item-header" onclick="toggleRisk(this)">
+            <span class="severity-dot low"></span>
+            <span class="risk-code low">UNSUB_ENV</span>
+            <span class="risk-label">Genel Çevre İddiası (ölçüt gerekir)</span>
+            <span class="severity-badge low">Düşük</span>
+          </div>
+          <div class="risk-quote">"...Çevre dostu yeşil ürün. #1 satış rekoru..."</div>
+        </div>
+
+        <div class="risk-item">
+          <div class="risk-item-header" onclick="toggleRisk(this)">
+            <span class="severity-dot low"></span>
+            <span class="risk-code low">UNSUB_URGENCY</span>
+            <span class="risk-label">Aciliyet / Stok Baskısı (doğrulanmalı)</span>
+            <span class="severity-badge low">Düşük</span>
+          </div>
+          <div class="risk-quote">"Son 3 adet! ...kesin sonuç vaat ediyoruz..."</div>
+        </div>
+
+        <div class="hallucination-note">
+          <span>🔴</span>
+          <span><strong>SPEC_HALLUCINATION · Yüksek:</strong> Metin, satıcının verdiği malzeme bilgisiyle çelişiyor olabilir.</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ ÖNERİLEN METİN -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-suggest">✨</div>
+      <div class="card-title-group">
+        <div class="card-title">Önerilen Metin</div>
+        <div class="card-subtitle">Düzenleyici katmanın ürettiği yumuşatılmış başlık ve açıklama</div>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <div class="suggest-section">
+        <div class="suggest-label new">Yeni Başlık</div>
+        <div class="new-title">
+          Doğal Ahşap Detoks Kremi — %100 rahatlatıcı etki (tıbbi iddia değildir) koşullara tabi koşullara tabi garanti (satış belgelerine bakınız) öne çıkan çözüm
+        </div>
+      </div>
+
+      <div class="suggest-section">
+        <div class="suggest-label new">Yeni Açıklama</div>
+        <div class="new-body">
+Cildinizi yeniler. Kanser hücrelerine karşı korur diyenler
+oldu; biz kişiye göre değişen sonuç vaat ediyoruz.
+Son 3 adet! Çevre dostu yeşil ürün. #1 satış rekoru.
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="suggest-section">
+        <div class="suggest-label changes">Değişiklik Özeti</div>
+        <div class="change-list">
+          <div class="change-item">
+            <span class="change-tag">UNSUB_HEALTH</span>
+            <span class="change-arrow">→</span>
+            <span class="change-desc">"şifa" ifadesi "rahatlatıcı etki" olarak güncellendi, tıbbi olmadığı notu eklendi</span>
+          </div>
+          <div class="change-item">
+            <span class="change-tag">UNSUB_GUARANTEE</span>
+            <span class="change-arrow">→</span>
+            <span class="change-desc">"kesin sonuç" → "kişiye göre değişen sonuç"</span>
+          </div>
+          <div class="change-item">
+            <span class="change-tag">UNSUB_GUARANTEE</span>
+            <span class="change-arrow">→</span>
+            <span class="change-desc">"garantili" → "garanti (satış belgelerine bakınız)"</span>
+          </div>
+          <div class="change-item">
+            <span class="change-tag">UNSUB_SUPERLATIVE</span>
+            <span class="change-arrow">→</span>
+            <span class="change-desc">"en iyi" → "öne çıkan"</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ④ POLİTİKA PASAJLARI -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon icon-policy">📋</div>
+      <div class="card-title-group">
+        <div class="card-title">Politika Pasajları</div>
+        <div class="card-subtitle">Demo seçimi — ilgili platform kuralları</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="policy-accordion">
+        <button class="policy-toggle-btn" onclick="togglePolicy(this)">
+          Politika maddelerini görüntüle
+          <span class="policy-chevron">▼</span>
+        </button>
+        <div class="policy-content">
+          <div class="policy-block">
+            <strong>## Bölüm 2 — Garanti ve Performans</strong><br>
+            "Ömür boyu garanti", "kesin sonuç", "garantili" gibi mutlak vaatler, gerçek sözleşme ve kanıt olmadan kullanılamaz.<br>
+            Performans iddiası yapılıyorsa test veya bağımsız doğrulama referansı önerilir.
+          </div>
+          <div class="policy-block">
+            <strong>## Bölüm 3 — Çevre ve Sürdürülebilirlik</strong><br>
+            "Çevre dostu", "yeşil", "karbon nötr" gibi genel çevre iddiaları ölçülebilir kriter ve sertifika olmadan kullanılmamalıdır.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Bu araç hukuki veya mali danışmanlık sunmaz; yalnızca demo amaçlı risk ve metin önerisi üretir. Kesin uyum için uzman görüşü alın.
+</footer>
+
+<script>
+  // Char count
+  const desc = document.getElementById('descInput');
+  const counter = document.getElementById('charCount');
+  desc.addEventListener('input', () => {
+    counter.textContent = desc.value.length + ' karakter';
+  });
+
+  // Toggle risk details
+  function toggleRisk(header) {
+    const quote = header.nextElementSibling;
+    if (!quote) return;
+    const isOpen = quote.style.display === 'block';
+    quote.style.display = isOpen ? 'none' : 'block';
+  }
+
+  // Toggle policy
+  function togglePolicy(btn) {
+    const content = btn.nextElementSibling;
+    const chevron = btn.querySelector('.policy-chevron');
+    const isOpen = content.classList.contains('open');
+    content.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+  }
+
+  // Run analysis (demo feedback)
+  function runAnalysis() {
+    const btn = document.querySelector('.btn-run');
+    btn.textContent = '⏳ Analiz ediliyor…';
+    btn.disabled = true;
+    btn.style.background = '#999';
+    btn.style.boxShadow = 'none';
+    setTimeout(() => {
+      btn.innerHTML = '✅ Analiz Tamamlandı!';
+      btn.style.background = 'var(--teal)';
+      btn.style.boxShadow = '0 4px 14px rgba(13,148,136,.35)';
+      setTimeout(() => {
+        btn.innerHTML = '🔍 Stres Testini Çalıştır';
+        btn.disabled = false;
+        btn.style.background = '';
+        btn.style.boxShadow = '';
+      }, 2000);
+    }, 1800);
+  }
+</script>
+</body>
+</html>
