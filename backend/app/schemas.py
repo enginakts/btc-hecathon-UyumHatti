@@ -21,13 +21,17 @@ class StressTestRequest(BaseModel):
     title: str = Field(..., min_length=1, max_length=500)
     description: str = Field(..., min_length=1, max_length=20000)
     product_facts: Optional[ProductFacts] = None
-    use_llm: bool = Field(default=True, description="False ise sadece kural tabanlı mock")
-    openai_api_key: Optional[str] = Field(
-        default=None,
-        description="İstek ile gönderilen API anahtarı (sunucu .env değerinden öncelikli)",
+    marketplace_profile: str = Field(
+        default="general",
+        description="Pazaryeri profili: general, kozmetik, elektronik, gida",
     )
-    openai_base_url: Optional[str] = Field(default=None, description="İsteğe bağlı OpenAI uyumlu API taban URL")
-    openai_model: Optional[str] = Field(default=None, description="İsteğe bağlı model adı")
+    target_regions: List[str] = Field(
+        default=["TR", "EU"],
+        description="Hedef coğrafi bölgeler: TR, EU, US",
+    )
+    use_llm: bool = Field(default=True, description="False ise sadece kural tabanlı mock")
+    gemini_api_key: Optional[str] = Field(default=None)
+    gemini_model: Optional[str] = Field(default="gemini-1.5-flash")
 
 
 class RiskItem(BaseModel):
@@ -51,8 +55,60 @@ class EditorOutput(BaseModel):
     remaining_risks: List[str]
 
 
+class ArbiterOutput(BaseModel):
+    """Denetçi (hakem) ajanı çıktısı — savcı ve düzeltici arasındaki çelişkileri çözer."""
+
+    decision: Literal["approved", "needs_revision", "rejected"]
+    reasoning: str
+    final_title: str
+    final_description: str
+    human_review_required: bool = False
+    consensus_notes: List[str] = Field(default_factory=list)
+
+
+class GeoLaw(BaseModel):
+    code: str
+    name: str
+    relevant_articles: List[str] = Field(default_factory=list)
+    url: str = ""
+    note: str = ""
+
+
+class GeoRegulation(BaseModel):
+    region: str
+    region_name: str
+    flag_emoji: str = ""
+    applicable_laws: List[GeoLaw] = Field(default_factory=list)
+    compliance_score: int = Field(default=50, ge=0, le=100)
+    risk_summary: str = ""
+    recommendations: List[str] = Field(default_factory=list)
+
+
+class TokenUsage(BaseModel):
+    critic_tokens: int = 0
+    editor_tokens: int = 0
+    arbiter_tokens: int = 0
+    total_tokens: int = 0
+    estimated_cost_usd: float = 0.0
+
+
+class PipelineStep(BaseModel):
+    step: str
+    label: str
+    status: Literal["pending", "running", "done", "skipped", "error"]
+    duration_ms: int = 0
+    message: str = ""
+
+
 class StressTestResponse(BaseModel):
     mode: Literal["llm", "mock"]
     critic: CriticOutput
     editor: EditorOutput
+    arbiter: Optional[ArbiterOutput] = None
+    geo_regulations: List[GeoRegulation] = Field(default_factory=list)
     policy_snippets_used: List[str] = Field(default_factory=list)
+    token_usage: Optional[TokenUsage] = None
+    pipeline_steps: List[PipelineStep] = Field(default_factory=list)
+    overall_compliance_score: int = Field(default=50, ge=0, le=100)
+    error_message: Optional[str] = None
+

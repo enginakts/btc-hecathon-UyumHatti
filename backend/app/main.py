@@ -12,7 +12,7 @@ _env = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(_env)
 load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
 
-app = FastAPI(title="İddia Stres Testi API", version="0.1.0")
+app = FastAPI(title="İddia Stres Testi API", version="0.2.0")
 
 
 @app.get("/")
@@ -20,6 +20,7 @@ async def root():
     """Tarayıcıda kök URL açıldığında 404 yerine yönlendirme bilgisi."""
     return {
         "service": "iddia-stres-testi-api",
+        "version": "0.2.0",
         "docs": "/docs",
         "health": "/api/health",
         "stress_test_post": "/api/stress-test",
