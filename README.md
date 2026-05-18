@@ -462,4 +462,4 @@ Bu depo eğitim / hackathon ve demo amaçlı geliştirilmiştir. Sorun veya öne
 
 ---
 
-*Sürüm 0.2 — İddia Stres Testi*
+*Sürüm 14.3 — İddia Stres Testi*
