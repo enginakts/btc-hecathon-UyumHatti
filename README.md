@@ -35,7 +35,6 @@ Savcı aşamasında bulunan her risk kodu (`UNSUB_HEALTH`, `UNSUB_GUARANTEE`, `U
 
 > **Uyarı:** Bu araç hukuki veya mali danışmanlık sunmaz. Sonuçlar ön inceleme ve demo amaçlıdır; yayın öncesi kararlarınızı mutlaka uzmanla doğrulayın.
 
-**Depo:** [github.com/enginakts/e-ticaret](https://github.com/enginakts/e-ticaret)
 
 ---
 
